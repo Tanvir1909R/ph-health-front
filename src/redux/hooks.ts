@@ -12,7 +12,7 @@ type TDebounce = {
 };
 
 export const useDebounce = ({ searchQuery, delay }: TDebounce) => {
-  const [debounceValue, setDebounceValue] = useState<string>("");
+  const [debounceValue, setDebounceValue] = useState<string>(searchQuery);
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebounceValue(searchQuery);

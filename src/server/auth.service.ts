@@ -1,6 +1,7 @@
 import { authKey } from "@/constant"
 import { decodedToken } from "@/utils/jwt";
 import { getFromLocalStorage, removeFromLocalStorage, setToLocalStorage } from "@/utils/local-storage"
+import { instance as axiosInstance } from "@/helper/axios/axiosInstance";
 
 export const storeUserInfo = (token:string)=>{
     return setToLocalStorage(authKey,token)
@@ -31,11 +32,11 @@ export const removeUser = () => {
    return removeFromLocalStorage(authKey);
 };
 
-// export const getNewAccessToken = async () => {
-//    return await axiosInstance({
-//       url: 'http://localhost:5000/api/v1/auth/refresh-token',
-//       method: 'POST',
-//       headers: { 'Content-Type': 'application/json' },
-//       withCredentials: true,
-//    });
-// };
+export const getNewAccessToken = async () => {
+   return await axiosInstance({
+      url: 'http://localhost:5000/api/v1/auth/refresh-token',
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      withCredentials: true,
+   });
+};

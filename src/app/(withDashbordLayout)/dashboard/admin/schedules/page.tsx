@@ -18,7 +18,6 @@ const SchedulesPage = () => {
    const [deleteSchedule] = useDeleteScheduleMutation();
 
    const schedules = data?.schedules;
-   console.log(schedules);
    
    const meta = data?.meta;
 

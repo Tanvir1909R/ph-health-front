@@ -15,7 +15,7 @@ const PhForm = ({ children,onSubmit,resolver, defaultValues }:TFormProps) => {
   if(resolver){
     formConfig["resolver"] = resolver
   }
-  if(resolver){
+  if(defaultValues){
     formConfig["defaultValues"] = defaultValues
   }
   const methods = useForm(formConfig);

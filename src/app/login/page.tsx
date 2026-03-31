@@ -1,7 +1,6 @@
 "use client";
 import assets from "@/assets";
 import { getUserInfo, storeUserInfo } from "@/server/auth.service";
-import { userLogin } from "@/server/actions/loginPatient";
 import {
   Box,
   Button,
@@ -20,6 +19,7 @@ import PhInput from "@/components/forms/PhInput";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { userLogin } from "@/server/actions/userLogin";
 
 const validationSchema = z.object({
   email: z.string().email("Please enter valid email"),

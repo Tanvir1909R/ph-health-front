@@ -1,6 +1,7 @@
 import { authKey } from "@/constant";
+import { getNewAccessToken } from "@/server/auth.service";
 import { IGenericErrorResponse, ResponseSuccessType } from "@/types";
-import { getFromLocalStorage } from "@/utils/local-storage";
+import { getFromLocalStorage, setToLocalStorage } from "@/utils/local-storage";
 import axios from "axios";
 
 const instance = axios.create();
@@ -34,15 +35,27 @@ instance.interceptors.response.use(function onFulfilled(response) {
         meta:response?.data?.meta
     }
     return responseObject;
-  }, function onRejected(error) {
+  }, async function onRejected(error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-        const responseObject:IGenericErrorResponse = {
+    const config = error.config;
+    if(error?.response?.data?.error?.message === "jwt expired" && !config.sent){
+      config.sent = true;
+      const response = await getNewAccessToken();
+      const accessToken = response?.data?.accessToken;
+      config.headers["Authorization"] = accessToken;
+      setToLocalStorage('accessToken', accessToken)
+      return instance(config)
+    }else{
+          const responseObject:IGenericErrorResponse = {
             statusCode: error?.response?.data?.statusCode || 500,
             message: error?.response?.data?.message || "something went wrong!",
             errorMessages: error?.response?.data?.message
         }
-    return responseObject;
+        return responseObject;
+    }
+    
+        
   });
 
 

@@ -16,7 +16,7 @@ import { modifyPayload } from "@/utils/modifyPayload";
 import { registerPatient } from "@/server/actions/registerPatient";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { userLogin } from "@/server/actions/loginPatient";
+import { userLogin } from "@/server/actions/userLogin";
 import { storeUserInfo } from "@/server/auth.service";
 import PhForm from "@/components/forms/PhForm";
 import PhInput from "@/components/forms/PhInput";

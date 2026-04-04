@@ -33,7 +33,7 @@ const LoginPage = () => {
     try {
       const res = await userLogin(values);
       if (res?.data?.accessToken) {
-        toast.success(res?.data?.message);
+        toast.success("login successful");
         storeUserInfo(res?.data?.accessToken);
         router.push("/dashboard");
       } else {

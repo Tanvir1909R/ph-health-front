@@ -1,20 +1,30 @@
-
 import { FieldValues } from "react-hook-form";
+import setAccessToken from "./setAccessToken";
 
-export const userLogin = async (data:FieldValues) => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/auth/login`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+export const userLogin = async (data: FieldValues) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/auth/login`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+        // cache: "no-store",
+        credentials: "include",
       },
-      body: JSON.stringify(data),
-      // cache: "no-store",
-      credentials:"include"
-    }
-  );
+    );
+    
+    const userInfo = await res.json();
 
-  const userInfo = await res.json();
-  return userInfo;
+    if (userInfo?.data?.accessToken) {
+      setAccessToken(userInfo.data.accessToken, {
+        redirect: "/dashboard",
+      });
+    }
+    return userInfo;
+  } catch (error) {
+    console.log((error as Error).message);
+  }
 };

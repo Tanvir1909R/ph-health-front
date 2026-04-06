@@ -36,10 +36,17 @@ const doctorScheduleApi = baseApi.injectEndpoints({
          providesTags: [tagTypes.doctorSchedule],
       }),
       getMySchedule: build.query({
-         query: () => ({
-            url: '/doctor-schedule/my-schedules',
+         query: (arg) => ({
+            url: '/doctor-schedule/my-schedule',
             method: 'GET',
+            params:arg
          }),
+         transformResponse: (response: [], meta: iMeta) => {
+            return {
+               doctorSchedules: response,
+               meta,
+            };
+         },
          providesTags: [tagTypes.doctorSchedule],
       }),
 

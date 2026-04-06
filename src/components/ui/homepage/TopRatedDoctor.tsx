@@ -11,8 +11,9 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import Link from "next/link";
 
 const TopRatedDoctor = async () => {
   const res = await fetch(`${apiLink}/doctors?limit=3&page=1`);
@@ -43,13 +44,15 @@ const TopRatedDoctor = async () => {
           {doctors.map((doctor: iDoctor) => (
             <Box key={doctor.id}>
               <Card>
-                <Box sx={{
-                  "& img":{
-                    objectFit:"cover",
-                    width:"100%",
-                    height:"300px"
-                  }
-                }}>
+                <Box
+                  sx={{
+                    "& img": {
+                      objectFit: "cover",
+                      width: "100%",
+                      height: "300px",
+                    },
+                  }}
+                >
                   <Image
                     src={doctor.profilePhoto}
                     alt="doctor"
@@ -64,25 +67,47 @@ const TopRatedDoctor = async () => {
                   <Typography variant="body2" sx={{ color: "text.secondary" }}>
                     {doctor.qualification}, {doctor.designation}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: "text.secondary" }} my={1}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: "text.secondary" }}
+                    my={1}
+                  >
                     <LocationOnIcon /> {doctor.address}
                   </Typography>
                   <Typography variant="body2" sx={{ color: "text.secondary" }}>
                     <LocalHospitalIcon /> {doctor.currentWorkingPlace}
                   </Typography>
                 </CardContent>
-                <CardActions sx={{
-                  justifyContent:"space-between",
-                  px:2,
-                  paddingBottom:"20px"
-                }}>
-                  <Button >Book Now</Button>
+                <CardActions
+                  sx={{
+                    justifyContent: "space-between",
+                    px: 2,
+                    paddingBottom: "20px",
+                  }}
+                >
+                  <Button>Book Now</Button>
                   <Button variant="outlined">View Profile</Button>
                 </CardActions>
               </Card>
             </Box>
           ))}
         </Stack>
+        <Box
+          sx={{
+            textAlign: "center",
+          }}
+        >
+          <Button
+            variant="outlined"
+            sx={{
+              marginTop: "20px",
+            }}
+            component={Link}
+            href="/doctors"
+          >
+            View ALL
+          </Button>
+        </Box>
       </Container>
     </Box>
   );

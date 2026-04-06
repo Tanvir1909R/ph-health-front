@@ -1,3 +1,5 @@
+"use client"
+import { logoutUser } from "@/server/actions/logoutUser";
 import { getUserInfo, removeUser } from "@/server/auth.service";
 import { Button } from "@mui/material";
 import Link from "next/link";
@@ -7,8 +9,7 @@ const AuthButton = () => {
   const userInfo = getUserInfo();
   const router = useRouter();
   const handleLogOut = () => {
-    removeUser();
-    router.refresh();
+    logoutUser(router)
   };
   return (
     <>

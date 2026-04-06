@@ -4,7 +4,8 @@ import { OverridableComponent } from "@mui/material/OverridableComponent";
 
 export type iMeta = {
     page:number,
-    limit:number
+    limit:number,
+    total?:number
 }
 
 export type UserRole = keyof typeof USER_ROLE

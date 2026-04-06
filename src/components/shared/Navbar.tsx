@@ -4,8 +4,11 @@ import Link from 'next/link'
 import React from 'react'
 import AuthButton from '../ui/authButton/AuthButton'
 import dynamic from 'next/dynamic'
+import useUserInfo from '@/hooks/useUserInfo'
 
 const Navbar = () => {
+    const userInfo = useUserInfo();
+    
   const AuthButton = dynamic(()=> import('../ui/authButton/AuthButton'),{ssr:false})
   return (
     <Container>
@@ -19,6 +22,13 @@ const Navbar = () => {
                 <Link href={'/'}>Medicine</Link>
                 <Link href={'/'}>Diagnostics</Link>
                 <Link href={'/'}>NGOs</Link>
+                 {userInfo?.email ? (
+                     <Link
+                        href='/dashboard'
+                     >
+                        Dashboard
+                     </Link>
+                  ) : null}
             </Stack>
             <AuthButton/>
         </Stack>

@@ -1,21 +1,39 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Box, Button, IconButton } from "@mui/material";
+import { Box, Button, IconButton, Pagination } from "@mui/material";
 import DoctorScheduleModal from "../components/DoctorScheduleModal";
 import { DataGrid } from "@mui/x-data-grid";
-import { useGetAllDoctorSchedulesQuery } from "@/redux/api/doctorScheduleApi";
+import { useDeleteDoctorScheduleMutation, useGetMyScheduleQuery } from "@/redux/api/doctorScheduleApi";
 import { dateFormatter } from "@/utils/dateFormatter";
 import DeleteIcon from "@mui/icons-material/Delete";
 import dayjs from "dayjs";
 import { GridColDef } from "@mui/x-data-grid";
 import { ISchedule } from "@/types/schedule";
+import { toast } from "sonner";
 
 const DoctorSchedulesPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const query: Record<string, any> = {};
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(3);
+
+  query["page"] = page;
+  query["limit"] = limit;
   const [allSchedule, setAllSchedule] = useState<any>([]);
-  const { data, isLoading } = useGetAllDoctorSchedulesQuery({});
+  const { data, isLoading } = useGetMyScheduleQuery({ ...query });
+  const [deleteDoctorSchedule] = useDeleteDoctorScheduleMutation()
   const schedules = data?.doctorSchedules;
-  
+  const meta = data?.meta;
+  let pageCount: number;
+
+  if (meta?.total) {
+    pageCount = Math.ceil(meta.total / limit);
+  }
+
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
+
   useEffect(() => {
     const updateData = schedules?.map((schedule: any, index: number) => {
       return {
@@ -30,10 +48,10 @@ const DoctorSchedulesPage = () => {
 
   const handleDelete = async (id: string) => {
     try {
-    //   const res = await deleteSchedule(id).unwrap();
-    //   if (res?.id) {
-    //     toast.success("Doctor delete successful!");
-    //   }
+        const res = await deleteDoctorSchedule(id).unwrap();
+        if (res?.id) {
+          toast.success("Doctor delete successful!");
+        }
     } catch (error: any) {
       console.log(error.message);
     }
@@ -67,7 +85,31 @@ const DoctorSchedulesPage = () => {
 
       {!isLoading ? (
         <Box my={2}>
-          <DataGrid rows={allSchedule?.sort((a:any,b:any)=> a.startDate.localeCompare(b.startDate)) ?? []} columns={columns} />
+          <DataGrid
+            rows={allSchedule}
+            columns={columns}
+            hideFooterPagination
+            slots={{
+              footer: () => {
+                return (
+                  <Box
+                    sx={{
+                      mb: 2,
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Pagination
+                      color="primary"
+                      count={pageCount}
+                      page={page}
+                      onChange={handleChange}
+                    />
+                  </Box>
+                );
+              },
+            }}
+          />
         </Box>
       ) : (
         <h1>Loading.....</h1>

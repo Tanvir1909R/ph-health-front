@@ -1,6 +1,7 @@
 import DashedLine from "@/components/ui/doctor/DashedLine";
 import { Box, Button, Chip, Container, Stack, Typography } from "@mui/material";
 import Image from "next/image";
+import DoctorScheduleSlots from "../components/DoctorScheduleSlots";
 // import DoctorScheduleSlots from '../components/DoctorScheduleSlots';
 
 type PropTypes = {
@@ -153,7 +154,7 @@ const DoctorsProfilePage = async ({ params }: PropTypes) => {
           </Stack>
         </Box>
       </Box>
-      {/* <DoctorScheduleSlots id={doctor.id} /> */}
+      <DoctorScheduleSlots id={doctor.id} />
     </Container>
   );
 };

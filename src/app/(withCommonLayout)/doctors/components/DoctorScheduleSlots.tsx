@@ -1,5 +1,7 @@
 "use client";
+import { useCreateAppointmentMutation } from "@/redux/api/appointmentApi";
 import { useGetAllDoctorSchedulesQuery } from "@/redux/api/doctorScheduleApi";
+import { useInitialPaymentMutation } from "@/redux/api/paymentApi";
 import { DoctorSchedule } from "@/types/doctorSchedule/indes";
 
 import { dateFormatter } from "@/utils/dateFormatter";
@@ -75,26 +77,26 @@ const DoctorScheduleSlots = ({ id }: { id: string }) => {
     (doctor: DoctorSchedule) => !doctor.isBooked,
   );
 
-  //    const [createAppointment] = useCreateAppointmentMutation();
-  //    const [initialPayment] = useInitialPaymentMutation();
+     const [createAppointment] = useCreateAppointmentMutation();
+     const [initialPayment] = useInitialPaymentMutation();
 
   const handleBookAppointment = async () => {
-    //   try {
-    //      if (id && scheduleId) {
-    //         const res = await createAppointment({
-    //            doctorId: id,
-    //            scheduleId,
-    //         }).unwrap();
-    //         if (res.id) {
-    //            const response = await initialPayment(res.id).unwrap();
-    //            if (response.paymentUrl) {
-    //               router.push(response.paymentUrl);
-    //            }
-    //         }
-    //      }
-    //   } catch (error) {
-    //      console.log(error);
-    //   }
+      try {
+         if (id && scheduleId) {
+            const res = await createAppointment({
+               doctorId: id,
+               scheduleId,
+            }).unwrap();
+            if (res.id) {
+               const response = await initialPayment(res.id).unwrap();
+               if (response.paymentUrl) {
+                  router.push(response.paymentUrl);
+               }
+            }
+         }
+      } catch (error) {
+         console.log(error);
+      }
   };
 
   return (
